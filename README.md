@@ -1,2 +1,2 @@
 # algos
-Learning
+Learning algorithms and DS using python
