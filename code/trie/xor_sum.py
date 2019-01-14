@@ -11,40 +11,43 @@ class TrieNode:
             self.children = [None]*2
 
 
-def insert(root, element):
-    current = root
-    for cur_pos in range(int_size-1, 0, -1):
-        cur_bit = 1 if (element & 1 << cur_pos) else 0  # start with MSB most significant bit, to maximize the value.
-        if current.children[cur_bit] is None:
-            current.children[cur_bit] = TrieNode()
-        current = current.children[cur_bit]
-    current.value = element
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
 
-
-def query(root, pre_xor):
-    current = root
-    for cur_pos in range(int_size-1, 0, -1):
-        cur_bit = 1 if (pre_xor & 1 << cur_pos) else 0
-        if current.children[1-cur_bit] is not None:
-            current = current.children[1-cur_bit]
-        elif current.children[cur_bit] is not None:
+    def insert(self,  element):
+        current = self.root
+        for cur_pos in range(int_size-1, 0, -1):
+            cur_bit = 1 if (element & 1 << cur_pos) else 0
+            if current.children[cur_bit] is None:
+                current.children[cur_bit] = TrieNode()
             current = current.children[cur_bit]
-    return pre_xor ^ current.value
+        current.value = element
+
+    def query(self, pre_xor):
+        current = self.root
+        for cur_pos in range(int_size-1, 0, -1):
+            cur_bit = 1 if (pre_xor & 1 << cur_pos) else 0
+            if current.children[1-cur_bit] is not None:
+                current = current.children[1-cur_bit]
+            elif current.children[cur_bit] is not None:
+                current = current.children[cur_bit]
+        return pre_xor ^ current.value
 
 
 def problem_solver(int_arr):
     pre_xor = 0
-    root = TrieNode()
-    insert(root, 0)
+    trie = Trie()
+    trie.insert(0)
     result = 0
     for element in int_arr:
         pre_xor = pre_xor ^ element
-        insert(root, pre_xor)
-        result = max(result, query(root, pre_xor))
+        trie.insert(pre_xor)
+        result = max(result, trie.query(pre_xor))
     print(result)
 
 
-sys.stdin = open(os.path.abspath(__file__)[:-2] + 'in', 'r')
+sys.stdin = open(os.path.abspath(__file__)[:-2] + 'in', 'r')  # TODO: for local testing only
 
 n_tc = int(input())
 for tc in range(n_tc):
