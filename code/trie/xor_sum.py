@@ -1,3 +1,4 @@
+import os
 import sys
 
 int_size = 32
@@ -13,7 +14,7 @@ class TrieNode:
 def insert(root, element):
     current = root
     for cur_pos in range(int_size-1, 0, -1):
-        cur_bit = 1 if (element & 1 << cur_pos) else 0  # start with MSB most significant bit, the reason being to maximize the value.
+        cur_bit = 1 if (element & 1 << cur_pos) else 0  # start with MSB most significant bit, to maximize the value.
         if current.children[cur_bit] is None:
             current.children[cur_bit] = TrieNode()
         current = current.children[cur_bit]
@@ -22,20 +23,19 @@ def insert(root, element):
 
 def query(root, pre_xor):
     current = root
-    result = pre_xor
     for cur_pos in range(int_size-1, 0, -1):
         cur_bit = 1 if (pre_xor & 1 << cur_pos) else 0
         if current.children[1-cur_bit] is not None:
             current = current.children[1-cur_bit]
         elif current.children[cur_bit] is not None:
             current = current.children[cur_bit]
-        result = max(result, current.value)
-    return result
+    return pre_xor ^ current.value
 
 
 def problem_solver(int_arr):
     pre_xor = 0
     root = TrieNode()
+    insert(root, 0)
     result = 0
     for element in int_arr:
         pre_xor = pre_xor ^ element
@@ -44,6 +44,8 @@ def problem_solver(int_arr):
     print(result)
 
 
+sys.stdin = open(os.path.abspath(__file__)[:-2] + 'in', 'r')
+
 n_tc = int(input())
 for tc in range(n_tc):
     arr_length = int(input())
@@ -51,7 +53,6 @@ for tc in range(n_tc):
     for i in range(arr_length):
         arr.append(int(input()))
     problem_solver(arr)
-sys.exit(0)
 
 
 '''
