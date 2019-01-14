@@ -47,7 +47,6 @@ def problem_solver(int_arr):
 
 sys.stdin = open(os.path.abspath(__file__)[:-2] + 'in', 'r')  # TODO: for local testing only
 data = sys.stdin.readlines()
-os.read()
 input_data = iter(data)
 n_tc = int(next(input_data))
 op = list()
