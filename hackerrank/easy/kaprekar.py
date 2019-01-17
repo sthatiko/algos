@@ -5,6 +5,10 @@ import random
 import re
 import sys
 
+
+# https://www.hackerrank.com/challenges/kaprekar-numbers/problem
+
+
 # Complete the kaprekarNumbers function below.
 def isKap(n):
     s = n*n
