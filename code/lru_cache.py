@@ -2,6 +2,7 @@
 # https://www.interviewbit.com/problems/lru-cache/
 
 # https://leetcode.com/problems/lru-cache
+import socket
 class Node:
     def __init__(self, key, value, prev=None, nxt=None):
         self.key = key
